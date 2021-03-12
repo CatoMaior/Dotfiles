@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+xrandr --output eDP-1 --primary --mode 1920x1080
+if grep -q "DELL P2017H" <<<"$(monitorSwitch -l)"; then
+	xrandr --output eDP-1 --pos 1600x0
+    sleep 0.1
+    xrandr --output HDMI-1 --mode 1600x900 --pos 0x0
+	echo "Detected DELL P2017H"
+elif grep -q AL1511 <<<"$(monitorSwitch -l)"; then
+    xrandr --output eDP-1 --pos 0x0 
+	sleep 0.1 
+	xrandr --output HDMI-1 --mode 1024x768 --pos 1920x0
+	echo "Detected Acer AL1511"
+fi
+feh --bg-fill ~/Pictures/Stelle/Passo\ Sella/IMG_3287.JPG
+#multiscreenlock -u ~/Pictures/Fulmini/IMG_3554.JPG

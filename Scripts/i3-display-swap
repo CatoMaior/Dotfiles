@@ -1,0 +1,21 @@
+#!/usr/bin/bash
+
+DISPLAY_CONFIG=($(i3-msg -t get_outputs | jq -r '.[]|"\(.name):\(.current_workspace)"'))
+WORKSPACES=(0, 0)
+i=0
+for ROW in "${DISPLAY_CONFIG[@]}"
+do
+    IFS=':'
+    read -ra CONFIG <<< "${ROW}"
+    if [ "${CONFIG[0]}" != "null" ] && [ "${CONFIG[1]}" != "null" ]; then
+        echo "moving ${CONFIG[1]} right..."
+        WORKSPACES[$i]=${CONFIG[1]}
+		i=$((i+1))
+        i3-msg -- workspace --no-auto-back-and-forth "${CONFIG[1]}"
+        i3-msg -- move workspace to output right   
+    fi
+done
+i3-msg "rename workspace ${WORKSPACES[0]} to temp"
+i3-msg "rename workspace ${WORKSPACES[1]} to ${WORKSPACES[0]}"
+i3-msg "rename workspace temp to ${WORKSPACES[1]}"
+
