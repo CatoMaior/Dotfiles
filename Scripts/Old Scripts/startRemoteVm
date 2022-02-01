@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+notify-send 'Remote control' 'Xubuntu32New virtual machine started';
+sudo mount -t cifs //192.168.1.3/VBoxShared -o guest,nosetuids,noperm,rw /media/catomaior/samba;
+VBoxManage startvm Xubuntu32New --type headless;

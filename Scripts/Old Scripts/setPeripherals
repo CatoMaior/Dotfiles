@@ -1,0 +1,21 @@
+#!/usr/bin/bash
+
+function get_headphones_index() {
+  echo $(pacmd list-cards | grep bluez_card -B1 | grep index | tr --delete "*index:")
+}
+
+function get_sink_index(){
+  echo $(pacmd list-sinks | grep bluez_sink -B1 | grep index | tr --delete "*index:")
+}
+
+function get_source_index(){
+  echo $(pacmd list-sources | grep "HDA:10ec0269,1462127e,00100203 HDA:8086280b,80860101,00100000" -B54 | grep index | tr --delete "*index:")
+}
+
+pacmd set-card-profile $(get_headphones_index) "a2dp_sink"
+pacmd set-default-sink $(get_sink_index)
+pacmd set-default-source $(get_source_index)
+
+#echo $(pacmd list-cards | grep bluez_card -B1 | grep index | tr --delete "*index:")
+#echo $(pacmd list-sinks | grep bluez_sink -B1 | grep index | tr --delete "*index:")
+#echo $(pacmd list-sources | grep "HDA:10ec0269,1462127e,00100203 HDA:8086280b,80860101,00100000" -B54 | grep index | tr --delete "*index:")

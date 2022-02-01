@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+for file in *.jp*; do tesseract $file .$file 2>/dev/null 1>/dev/null; done
+for file in .*.txt; do cat $file >> .out.txt; rm $file; done
+cat .out.txt
+rm .out.txt

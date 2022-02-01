@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+notify-send 'Remote control' 'Xubuntu32New virtual machine powered off';
+VBoxManage controlvm Xubuntu32New poweroff soft;
+sudo umount -a -t cifs -l;

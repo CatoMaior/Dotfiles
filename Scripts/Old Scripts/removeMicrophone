@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+pactl unload-module $(cat /home/catomaior/Scripts/addMicrophoneFiles/1.txt)
+pactl unload-module $(cat /home/catomaior/Scripts/addMicrophoneFiles/2.txt)
+pactl unload-module $(cat /home/catomaior/Scripts/addMicrophoneFiles/3.txt)
+pactl unload-module $(cat /home/catomaior/Scripts/addMicrophoneFiles/4.txt)
+pactl unload-module $(cat /home/catomaior/Scripts/addMicrophoneFiles/5.txt)

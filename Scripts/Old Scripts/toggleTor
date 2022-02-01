@@ -1,0 +1,20 @@
+#!/bin/zsh
+CACHE_FILE=~/.cache/toggleTor
+if [[ ! -f $CACHE_FILE ]]; then
+	echo off > CACHE_FILE
+    echo Creating file with off
+	exit
+fi
+
+CACHE_CONTENT=$(cat $CACHE_FILE)
+if [[ ! -n $CACHE_CONTENT || $CACHE_CONTENT == on ]]; then
+	echo off > $CACHE_FILE
+	export VIRTUAL_ENV='Tor'
+	export VIRTUAL_ENV_DISABLE_PROMPT=Tor
+	source torsocks on
+else
+	echo on > $CACHE_FILE
+	unset VIRTUAL_ENV
+	unset VIRTUAL_ENV_DISABLE_PROMPT
+	source torsocks off
+fi

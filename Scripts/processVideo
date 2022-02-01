@@ -1,0 +1,183 @@
+#!/bin/bash
+
+profile_json='
+{
+    "PresetList": [
+        {
+            "AlignAVStart": true,
+            "AudioCopyMask": [
+                "copy:aac"
+            ],
+            "AudioEncoderFallback": "av_aac",
+            "AudioLanguageList": [],
+            "AudioList": [
+                {
+                    "AudioBitrate": 160,
+                    "AudioCompressionLevel": -1.0,
+                    "AudioDitherMethod": "auto",
+                    "AudioEncoder": "av_aac",
+                    "AudioMixdown": "stereo",
+                    "AudioNormalizeMixLevel": false,
+                    "AudioSamplerate": "auto",
+                    "AudioTrackDRCSlider": 0.0,
+                    "AudioTrackGainSlider": 0.0,
+                    "AudioTrackQuality": 1.0,
+                    "AudioTrackQualityEnable": false
+                }
+            ],
+            "AudioSecondaryEncoderMode": true,
+            "AudioTrackSelectionBehavior": "first",
+            "ChapterMarkers": true,
+            "ChildrenArray": [],
+            "Default": false,
+            "FileFormat": "av_mp4",
+            "Folder": false,
+            "FolderOpen": false,
+            "InlineParameterSets": false,
+            "MetadataPassthrough": true,
+            "Mp4HttpOptimize": false,
+            "Mp4iPodCompatible": false,
+            "PictureAllowUpscaling": false,
+            "PictureAutoCrop": true,
+            "PictureBottomCrop": 0,
+            "PictureChromaSmoothCustom": "",
+            "PictureChromaSmoothPreset": "off",
+            "PictureChromaSmoothTune": "none",
+            "PictureColorspaceCustom": "",
+            "PictureColorspacePreset": "off",
+            "PictureCombDetectCustom": "",
+            "PictureCombDetectPreset": "default",
+            "PictureDARWidth": 2560,
+            "PictureDeblockCustom": "strength=strong:thresh=20:blocksize=8",
+            "PictureDeblockPreset": "off",
+            "PictureDeblockTune": "medium",
+            "PictureDeinterlaceCustom": "",
+            "PictureDeinterlaceFilter": "decomb",
+            "PictureDeinterlacePreset": "default",
+            "PictureDenoiseCustom": "",
+            "PictureDenoiseFilter": "off",
+            "PictureDenoisePreset": "",
+            "PictureDenoiseTune": "none",
+            "PictureDetelecine": "off",
+            "PictureDetelecineCustom": "",
+            "PictureForceHeight": 0,
+            "PictureForceWidth": 0,
+            "PictureHeight": 1440,
+            "PictureItuPAR": false,
+            "PictureKeepRatio": true,
+            "PictureLeftCrop": 0,
+            "PictureLooseCrop": false,
+            "PictureModulus": 2,
+            "PicturePAR": "auto",
+            "PicturePARHeight": 1,
+            "PicturePARWidth": 1,
+            "PicturePadBottom": 0,
+            "PicturePadColor": "black",
+            "PicturePadLeft": 0,
+            "PicturePadMode": "none",
+            "PicturePadRight": 0,
+            "PicturePadTop": 0,
+            "PictureRightCrop": 0,
+            "PictureRotate": "angle=0:hflip=0",
+            "PictureSharpenCustom": "",
+            "PictureSharpenFilter": "off",
+            "PictureSharpenPreset": "",
+            "PictureSharpenTune": "",
+            "PictureTopCrop": 0,
+            "PictureUseMaximumSize": true,
+            "PictureWidth": 2560,
+            "PresetDescription": "nvenc h264 1440p",
+            "PresetDisabled": false,
+            "PresetName": "Partite",
+            "SubtitleAddCC": false,
+            "SubtitleAddForeignAudioSearch": true,
+            "SubtitleAddForeignAudioSubtitle": false,
+            "SubtitleBurnBDSub": true,
+            "SubtitleBurnBehavior": "foreign",
+            "SubtitleBurnDVDSub": true,
+            "SubtitleLanguageList": [],
+            "SubtitleTrackSelectionBehavior": "none",
+            "Type": 1,
+            "UsesPictureFilters": true,
+            "VideoAvgBitrate": 6000,
+            "VideoColorMatrixCodeOverride": 0,
+            "VideoEncoder": "nvenc_h264",
+            "VideoFramerate": "30",
+            "VideoFramerateMode": "pfr",
+            "VideoGrayScale": false,
+            "VideoLevel": "auto",
+            "VideoOptionExtra": "",
+            "VideoPreset": "medium",
+            "VideoProfile": "auto",
+            "VideoQSVDecode": false,
+            "VideoQualitySlider": 35.0,
+            "VideoQualityType": 2,
+            "VideoScaler": "swscale",
+            "VideoTune": "",
+            "VideoTurboTwoPass": true,
+            "VideoTwoPass": true,
+            "x264Option": "",
+            "x264UseAdvancedOptions": false
+        }
+    ],
+    "VersionMajor": 47,
+    "VersionMicro": 0,
+    "VersionMinor": 0
+}
+'
+help(){
+	echo "Merge all MP4 files from a directory into an h264_nvenc encoded file and upload it on YouTube"
+   	echo "Syntax:"
+	echo "  processVideos -i sourceDirectory -o outputFile [-t youtubeTitle]"
+   	echo
+	echo "Options:"
+   	echo -e "  -h\tprint this help."
+	echo -e "  -i\tpath to the directory all videos are merged from"
+	echo -e "  -o\tpath to output file"
+	echo -e "  -t\ttitle for YouTube upload. Omit if you don't want to upload to YouTube"
+   	echo
+	exit
+}
+
+while getopts ":h:i:o:t:" option; do
+   case $option in
+      h) help;;
+      i) src_folder="$OPTARG";;
+	  o) outfile="$OPTARG";;
+	  t) yt_title="$OPTARG";;
+     \?) echo "Error: Invalid option"
+         exit;;
+   esac
+done
+
+if [ -z ${src_folder+x} ]; then
+	echo 'Missing parameter for "-i" option'
+	exit
+fi
+if [ -z ${outfile+x} ]; then
+    echo 'Missing parameter for "-o" option'
+	exit
+fi
+
+cache_folder="$HOME/.cache/ProcessVideos/"
+mkdir -p $cache_folder
+cd $cache_folder
+echo "Copying files"
+cp $src_folder/*.MP4 ./
+touch filelist.txt
+for file in *.MP4; do
+	echo "file '$file'" >> filelist.txt
+done
+ffmpeg -y -f concat -safe 0 -i filelist.txt -c copy output.mp4
+echo $profile_json > Partite.json
+HandBrakeCLI --preset-import-file Partite.json -Z Partite -i output.mp4 -o $outfile
+if [ -z ${yt_title+x} ]; then
+    echo 'Missing parameter for "-t" option. Video will not be uploaded to YouTube. Processing completed'
+	cd $HOME
+	rm $cache_folder
+    exit
+fi
+youtube-upload --title=$yt_title --playlist="U17 gold stagione 2021/2022" --client-secrets=$HOME/.client_secrets.json --privacy unlisted $outfile
+cd $HOME
+rm $cache_folder
+echo 'YouTube uploading completed. Processing completed.'

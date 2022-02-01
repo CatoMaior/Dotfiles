@@ -1,0 +1,2 @@
+#!/usr/bin/bash
+pactl unload-module $(cat /home/catomaior/Scripts/addMicrophoneFiles/single.txt)

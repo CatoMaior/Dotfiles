@@ -1,0 +1,4 @@
+#!/bin/zsh
+export VIRTUAL_ENV='Tor'
+export VIRTUAL_ENV_DISABLE_PROMPT=Tor
+source torsocks on

@@ -1,0 +1,38 @@
+#!/bin/bash
+
+TEMP_FILE=~/.cache/i3blocksCpuTemp
+NOTIFICATION_FILE=~/.cache/i3blocksNotification
+
+send_notification(){
+	text=$(cat $TEMP_FILE)
+	dunstify -h string:x-dunst-stack-tag:test -u low "CPU cores temperature:" "$text"
+}
+
+remove_notification(){
+	dunstify -h string:x-dunst-stack-tag:test -u low " " -t 1
+}
+
+sensors | grep Core | sed 's/+//' | sed 's/\.0//' | awk '{printf "%s %s     %s\n", $1, $2, $3}' > $TEMP_FILE
+
+if [ ! -z "${BLOCK_BUTTON}" ]; then
+	if [ -f $NOTIFICATION_FILE ]; then
+		rm $NOTIFICATION_FILE
+		remove_notification
+	else
+		touch $NOTIFICATION_FILE
+	fi
+fi
+
+if [ -f $NOTIFICATION_FILE ]; then
+	send_notification
+fi
+
+TEMP=0
+
+while read line; do
+   CORETEMP=$(echo $line | awk '{printf "%s", $3}')
+   CORETEMP=${CORETEMP%"°C"}
+   ((TEMP+=CORETEMP))
+done < $TEMP_FILE
+
+echo $(bc <<< "scale=1; $TEMP / 6")"°C"

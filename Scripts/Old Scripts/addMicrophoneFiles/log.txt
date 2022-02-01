@@ -1,0 +1,2 @@
+Added analog stereo
+Added analog stereo monitor

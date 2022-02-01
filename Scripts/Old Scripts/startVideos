@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+ffmpeg -hide_banner -f v4l2 -i /dev/video0 -filter_complex '[0:v]yadif,split=2[out1][out2]' \
+        -map '[out1]' -input_format yuv420p -pix_fmt yuyv422 -f v4l2 /dev/video2 \
+        -map '[out2]' -input_format yuv420p -pix_fmt yuyv422 -f v4l2 /dev/video3

@@ -1,0 +1,2 @@
+#!/bin/bash
+pkill -SIGRTMIN+1 i3blocks

@@ -1,0 +1,2 @@
+#!/bin/zsh
+codium /home/catomaior/.config/i3/config.conf

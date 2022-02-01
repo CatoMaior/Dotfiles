@@ -1,0 +1,15 @@
+#!/bin/bash
+fehbg
+killall redshift
+killall i3-battery-notification
+setxkbmap -layout it
+picom &
+xss-lock -- multiscreenlock -l &
+autorandr -l integratedOnly
+autorandr -c
+pkill -RTMIN+1 i3blocks
+redshift &
+i3-battery-notification -n -D -L 20 -l 10 -s /usr/share/sounds/freedesktop/stereo/window-question.oga &
+nm-applet &
+dunst &
+xfce4-power-manager

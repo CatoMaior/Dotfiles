@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+
+function get_source_index(){
+  echo $(pacmd list-sources | grep "alsa_input.usb-MACROSILICON_USB_Video-02.multichannel-input" -B2 | grep index | tr --delete "*index:")
+}
+
+pacmd set-default-source $(pacmd list-sources | grep "alsa_input.usb-MACROSILICON_USB_Video-02.multichannel-input" -B2 | grep index | tr --delete "*index:")
+
+#echo $(pacmd list-cards | grep bluez_card -B1 | grep index | tr --delete "*index:")
+#echo $(pacmd list-sinks | grep bluez_sink -B1 | grep index | tr --delete "*index:")
+#echo $(pacmd list-sources | grep "HDA:10ec0269,1462127e,00100203 HDA:8086280b,80860101,00100000" -B54 | grep index | tr --delete "*index:")

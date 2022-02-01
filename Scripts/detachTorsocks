@@ -1,0 +1,4 @@
+#!/bin/zsh
+unset VIRTUAL_ENV
+unset VIRTUAL_ENV_DISABLE_PROMPT
+source torsocks off

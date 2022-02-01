@@ -1,0 +1,28 @@
+#!/usr/bin/bash
+
+PREVIOUS=$(pacmd list-sources | grep "*" | tr --delete " *index:")
+
+pacmd set-default-source $(pacmd list-sources | grep "alsa_input.usb-MACROSILICON_USB_Video-02.analog-stereo" -B2 | grep index | tr --delete " *index:");
+
+while getopts t:r:o: option
+do
+case "${option}"
+in
+t) TIME=$(echo ${OPTARG} | awk -F: '{ print ($1 * 3600) + ($2 * 60) + $3 }');;
+r) RESOLUTION=${OPTARG};;
+o) OUTPATH=${OPTARG};;
+esac
+done
+
+if [ -z "$RESOLUTION" ]; then
+	RESOLUTION=1920x1080
+fi
+if [ -z "$OUTPATH" ]; then
+	OUTPATH=~/Videos/$(date '+%d-%m-%Y_%H-%M-%S.mp4')
+fi
+
+ffmpeg -f alsa -i default -f v4l2 -framerate 30 -video_size $RESOLUTION -input_format mjpeg \
+	-i $(v4l2-ctl --list-devices | grep "USB Video: USB Video" -A1 | grep dev | tr --delete "\t") \
+	-b:v 6M -c:v hevc_nvenc -t $TIME $OUTPATH -y 
+
+pacmd set-default-source $PREVIOUS

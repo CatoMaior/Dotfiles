@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+sudo modprobe v4l2loopback video_nr=40,41 card_label="OBS output","OBS output for browsers" exclusive_caps=0,1;
+ls /dev/video*

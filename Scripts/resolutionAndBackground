@@ -1,0 +1,17 @@
+#!/bin/bash
+xrandr --output eDP-1 --primary --mode 1920x1080
+if grep -q "DELL P2017H" <<<"$(monitorSwitch -l)"; then
+	echo "Detected DELL P2017H"
+	autorandr -l dell
+elif grep -q AL1511 <<<"$(monitorSwitch -l)"; then
+	autorandr -l acer 
+	echo "Detected Acer AL1511"
+elif grep -q HDMI <<<"$(monitorSwitch -l)"; then
+	arandr
+	echo "Detected new monitor"
+else
+	autorandr -l integratedOnly
+	echo "Detected only integrated monitor"
+fi
+#feh --bg-fill ~/Pictures/Stelle/Passo\ Sella/IMG_3287.JPG
+#multiscreenlock -u ~/Pictures/Fulmini/IMG_3554.JPG

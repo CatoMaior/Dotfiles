@@ -1,0 +1,3 @@
+#!/bin/bash
+java -jar /home/catomaior/Scripts/ubersigner/uber-apk-signer-1.1.0.jar --apks $1
+

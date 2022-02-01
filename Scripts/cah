@@ -1,0 +1,3 @@
+#!/bin/bash
+cd /home/catomaior/Projects/PretendYoureXyzzy
+screen -d -m mvn clean package war:exploded jetty:run -Dmaven.buildNumber.doCheck=false -Dmaven.buildNumber.doUpdate=false

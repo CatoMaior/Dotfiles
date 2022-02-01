@@ -1,0 +1,18 @@
+#!/bin/bash
+if [ -z $AUTORANDR_CURRENT_PROFILE ]
+then
+	echo firstIf
+	multiscreenlock -u ~/Pictures/Fulmini/IMG_3554.JPG
+elif [ "$AUTORANDR_CURRENT_PROFILE" == "integratedOnly" ]
+then
+	toggleAudioOutput analog
+elif [ "$(cat ~/.config/autorandr/lastConfig)" != "$AUTORANDR_CURRENT_PROFILE" ]
+then
+	multiscreenlock -u ~/Pictures/Fulmini/IMG_3554.JPG
+	echo $AUTORANDR_CURRENT_PROFILE > ~/.config/autorandr/lastConfig
+fi
+if [ "$AUTORANDR_CURRENT_PROFILE" != "integratedOnly" ]
+then
+	sleep 1s
+fi
+fehbg

@@ -1,0 +1,5 @@
+rofi.opacity: 50
+rofi.theme: /usr/share/rofi/themes/transparent.rasi
+rofi.modi: window,drun,run,ssh
+rofi.tokenize: false
+@theme "/usr/share/rofi/themes/transparent.rasi"

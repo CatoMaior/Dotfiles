@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+pactl load-module module-null-sink sink_name=System_audio sink_properties=device.description=System_audio > /home/catomaior/Scripts/addMicrophoneFiles/1.txt
+pactl load-module module-null-sink sink_name=Microphone_and_system_audio sink_properties=device.description=Microphone_and_system_audio > /home/catomaior/Scripts/addMicrophoneFiles/2.txt
+pactl load-module module-loopback sink=Microphone_and_system_audio source=System_audio.monitor > /home/catomaior/Scripts/addMicrophoneFiles/3.txt
+pactl load-module module-loopback sink=Microphone_and_system_audio source=alsa_input.pci-0000_00_1f.3.analog-stereo > /home/catomaior/Scripts/addMicrophoneFiles/4.txt
+pactl load-module module-loopback sink=alsa_output.pci-0000_00_1f.3.analog-stereo source=System_audio.monitor > /home/catomaior/Scripts/addMicrophoneFiles/5.txt
+pactl set-default-sink System_audio

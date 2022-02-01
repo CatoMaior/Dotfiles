@@ -1,0 +1,20 @@
+#!/usr/bin/bash
+
+BRIGHT=$(xrandr --verbose | awk '/Brightness:/ {print $2}' | sed -n '2p')
+echo "Before: $BRIGHT"
+
+if [ "$1" = '+' ]; then
+    NEWBRIGHT=$(echo "$BRIGHT + 0.10" | bc)
+elif [ "$1" = '-' ]; then
+    NEWBRIGHT=$(echo "$BRIGHT - 0.10" | bc)
+fi
+if [ "$(echo "$NEWBRIGHT > 1.00" | bc)" -eq 1 ]; then
+	NEWBRIGHT='1.00'
+fi
+if [ "$(echo "$NEWBRIGHT < 0.20" | bc)" -eq 1 ]; then
+	NEWBRIGHT='0.20'
+fi
+
+echo "After:  $NEWBRIGHT"
+
+xrandr --output HDMI-1 --brightness $NEWBRIGHT

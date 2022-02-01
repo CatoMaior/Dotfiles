@@ -1,0 +1,47 @@
+// vim:ts=4:sw=4:et
+{
+    "border": "normal",
+    "current_border_width": 2,
+    "floating": "auto_off",
+    "geometry": {
+       "height": 1041,
+       "width": 1916,
+       "x": 2,
+       "y": 37
+    },
+    "name": "es4.c - Untitled (Workspace) - Visual Studio Code",
+    "percent": 0.6,
+    "swallows": [
+       {
+       // "class": "^Code$",
+       // "instance": "^code$",
+       // "title": "^es4\\.c\\ \\-\\ Untitled\\ \\(Workspace\\)\\ \\-\\ Visual\\ Studio\\ Code$",
+       // "window_role": "^browser\\-window$"
+       }
+    ],
+    "type": "con"
+}
+
+{
+    "border": "normal",
+    "current_border_width": 2,
+    "floating": "auto_off",
+    "geometry": {
+       "height": 534,
+       "width": 914,
+       "x": 0,
+       "y": 0
+    },
+    "name": "Terminal",
+    "percent": 0.4,
+    "swallows": [
+       {
+       // "class": "^Gnome\\-terminal$",
+       // "instance": "^gnome\\-terminal\\-server$",
+       // "title": "^Terminal$",
+       // "window_role": "^gnome\\-terminal\\-window\\-ba281131\\-dfd3\\-4eaf\\-897d\\-b2896f6aa582$"
+       }
+    ],
+    "type": "con"
+}
+

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+SND_PROFILE=""
+analog_profile="output:analog-stereo+input:analog-stereo"
+hdmi_profile="output:hdmi-stereo-extra1+input:analog-stereo"
+if [ "$#" -eq 1 ]; then    
+    if [ "$1" = "analog" ]; then
+        echo "Setting sound to analog: $analog_profile"
+		SND_PROFILE=$analog_profile
+    elif [ "$1" = "hdmi" ]; then
+        echo "Setting sound to hdmi: $hdmi_profile"
+		SND_PROFILE=$hdmi_profile
+    else
+        echo "Only valid args \"hdmi\" or \"analog\""
+        exit 1
+    fi
+    pacmd set-card-profile 0 $SND_PROFILE
+    echo "Changed the sound profile to $1"
+else
+    echo "Number of arguments expected: 1"
+fi

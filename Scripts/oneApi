@@ -1,0 +1,4 @@
+#!/bin/zsh
+export VIRTUAL_ENV='oneApi'
+export VIRTUAL_ENV_DISABLE_PROMPT=oneApi
+source /opt/intel/oneapi/setvars.sh
